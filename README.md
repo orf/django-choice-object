@@ -1,6 +1,8 @@
 Django choice object
 ====================
 
+[![Build Status](https://travis-ci.org/orf/django-choice-object.svg?branch=master)](https://travis-ci.org/orf/django-choice-object)
+
 I am a choice object for Django. I make using choices in forms and models easier.
 
 
