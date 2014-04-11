@@ -1,5 +1,5 @@
 import unittest
-from choice import Choice
+from .choice import Choice
 
 
 class TestChoice(Choice):
