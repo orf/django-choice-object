@@ -8,5 +8,6 @@ setup(
     license='',
     author='Tom',
     author_email='tom@tomforb.es',
-    description='A choice object for Django forms and models'
+    description='A choice object for Django forms and models',
+    install_requires=["six"]
 )
