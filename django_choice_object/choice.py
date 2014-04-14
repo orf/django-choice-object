@@ -40,6 +40,10 @@ class ChoiceBase(object):
 class Choice(six.with_metaclass(ChoiceMetaclass, ChoiceBase)):
     _order_by = "value"
 
+    def __iter__(self):
+        for value, data in sorted(self._data.items(), key=lambda i: i[0] if self._order_key == 0 else i[1]):
+            yield value, data
+
     @classmethod
     def GetByValue(cls, value):
         return dict(cls)[value]
