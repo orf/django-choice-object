@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='django-choice-object',
-    version='0.5',
+    version='0.6',
     packages=['django_choice_object'],
     url='https://github.com/orf/django-choice-object',
     license='',
