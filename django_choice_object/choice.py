@@ -30,20 +30,8 @@ class ChoiceMetaclass(type):
             for value, name_data in data.items():
                 cls._data[value] = name_data
 
-
-
-        # Go through each of the classes bases and merge their ._data attribute, if it is a subclass of Choice
-        # Only supports 1 level of inheritance ATM, with only a single parent (cant subclass 2 choice children).
-        """for base_class in cls.__bases__:
-            if not base_class == type[0] and issubclass(base_class, type):
-                for index, data_item in enumerate(cls._data):
-                    # Get the base classes values and update ours
-                    base_class_item = filter(lambda i: i if i[0] == data_item[0] else None, base_class._data)
-                    if len(base_class_item):
-                        new_tuple = (data_item[0], base_class_item[0][1])
-                        cls._data[index] = new_tuple"""
-
     def __iter__(self):
+        print(self._data.items())
         for value, data in sorted(self._data.items(), key=lambda i: i[0] if self._order_key == 0 else i[1]):
             yield value, data
 
