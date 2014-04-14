@@ -4,14 +4,14 @@ import six
 
 
 class ChoiceMetaclass(type):
-    def __init__(cls, name, type, other):
+    def __init__(cls, name, typeof, other):
         # {value: (display_name, is_specified))
         cls._data = {}
         cls._order_key = 0 if (getattr(cls, "_order_by", "value") == "value") else 1
 
         for name, value in inspect.getmembers(cls):
             if not name.startswith("_") and \
-                    not (inspect.isfunction(value) or inspect.ismethod(value)):
+                    not (inspect.isfunction(value) or inspect.ismethod(value) or type(value) is classmethod):
                 if isinstance(value, tuple) and len(value) > 1:
                     value, display_name, is_specified = value[0], value[1], True
                 else:
@@ -37,6 +37,10 @@ class ChoiceMetaclass(type):
 
 
 class ChoiceBase(object):
+    pass
+
+
+class Choice(six.with_metaclass(ChoiceMetaclass, ChoiceBase)):
     _order_by = "value"
 
     @classmethod
@@ -57,7 +61,3 @@ class ChoiceBase(object):
                 return getattr(cls, dirname)
 
         return None
-
-
-class Choice(six.with_metaclass(ChoiceMetaclass, ChoiceBase)):
-    pass
