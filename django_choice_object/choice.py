@@ -29,7 +29,6 @@ class ChoiceMetaclass(type):
                 cls._data[value] = name_data
 
     def __iter__(self):
-        print(self._data.items())
         for value, data in sorted(self._data.items(), key=lambda i: i[0] if self._order_key == 0 else i[1]):
             yield value, data
 
