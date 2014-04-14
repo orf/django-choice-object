@@ -1,1 +1,1 @@
-from choice import Choice
+from .choice import Choice
