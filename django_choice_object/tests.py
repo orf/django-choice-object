@@ -29,8 +29,9 @@ def get_name_from_choices(value, choices):
 
 class TestChoices(unittest.TestCase):
     def testInstance(self):
-        i = TestChoice()
-        self.failUnlessEqual(list(i), list(TestChoice))
+        self.failUnlessEqual(list(TestChoice()), list(TestChoice))
+        self.failUnlessEqual(list(TestChoiceOrdered()), list(TestChoiceOrdered))
+        self.failUnlessEqual(list(TestChoiceInheritance()), list(TestChoiceInheritance))
 
     def testInheritance(self):
         self.failUnlessEqual(list(TestChoiceInheritance)[:-1], list(TestChoice))
