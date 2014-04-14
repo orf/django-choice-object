@@ -22,8 +22,6 @@ class ChoiceMetaclass(type):
                 setattr(cls, name, value)
 
         # So we need to access the ._data attribute of any parent classes so we can access the
-        print(cls.__base__)
-
         if hasattr(cls.__base__, "_data"):
             data = cls.__base__._data
             # Go and patch up our values
