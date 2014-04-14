@@ -12,10 +12,12 @@ class TestChoice(Choice):
 
 
 class TestChoiceInheritance(TestChoice):
+    EXTRA_VALUE = 7
     pass
 
 
 class TestChoiceOrdered(TestChoice):
+    ZED = 7, "zzzzzzzzz"
     _order_by = "name"
 
 
@@ -27,7 +29,7 @@ def get_name_from_choices(value, choices):
 
 class TestChoices(unittest.TestCase):
     def testInheritance(self):
-        self.failUnlessEqual(list(TestChoiceInheritance), list(TestChoice))
+        self.failUnlessEqual(list(TestChoiceInheritance)[:-1], list(TestChoice))
 
     def testNames(self):
         fourth_name = get_name_from_choices(TestChoice.FOURTH, list(TestChoice))
@@ -39,9 +41,10 @@ class TestChoices(unittest.TestCase):
         self.failUnlessEqual(TestChoice.GetByName("a description"), TestChoice.FOURTH)
         self.failUnlessEqual(TestChoice.GetByValue(TestChoice.FOURTH), fourth_name)
 
-    def testOderBy(self):
+    def testOrderBy(self):
         self.failIfEqual(list(TestChoice), list(TestChoiceOrdered))
-        self.failUnless(list(TestChoiceOrdered)[-1][0] == TestChoice.FIRST)
+        self.failUnless(list(TestChoiceOrdered)[-1][0] == TestChoiceOrdered.ZED)
+        self.failUnlessEqual(list(TestChoice)[0][0], TestChoice.FIRST)
 
 
 
