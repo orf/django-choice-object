@@ -12,12 +12,11 @@ class ChoiceMetaclass(type):
                     not (inspect.isfunction(value) or inspect.ismethod(value) or type(value) is classmethod):
                 if isinstance(value, tuple) and len(value) > 1:
                     value, display_name = value[0], value[1]
+                    setattr(cls, name, value)
                 else:
-                    generated_name = " ".join(x.capitalize() for x in name.split("_"))
-                    value, display_name = value, generated_name
+                    display_name = " ".join(x.capitalize() for x in name.split("_"))
 
                 cls._data[value] = display_name
-                setattr(cls, name, value)
 
         # So we need to access the ._data attribute of any parent classes so we can access the
         if hasattr(cls.__base__, "_data"):
