@@ -25,9 +25,12 @@ class ChoiceMetaclass(type):
             for value, name_data in data.items():
                 cls._data[value] = name_data
 
-    def __iter__(self):
+    def _iter(self):
         for value, data in sorted(self._data.items(), key=lambda i: i[0] if self._order_key == 0 else i[1]):
             yield value, data
+
+    def __iter__(self):
+        return self._iter()
 
 
 class ChoiceBase(object):
@@ -38,8 +41,7 @@ class Choice(six.with_metaclass(ChoiceMetaclass, ChoiceBase)):
     _order_by = "value"
 
     def __iter__(self):
-        for value, data in sorted(self._data.items(), key=lambda i: i[0] if self._order_key == 0 else i[1]):
-            yield value, data
+        return self.__class__._iter()
 
     @classmethod
     def GetByValue(cls, value):
