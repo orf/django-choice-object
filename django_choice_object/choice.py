@@ -29,7 +29,7 @@ class ChoiceMetaclass(type):
                 cls._data[value] = name_data
 
     def _iter(self):
-        for value, data in sorted(self._data.items(), key=lambda i: i[0] if self._order_key == 0 else i[1]):
+        for value, data in sorted(self._data.items(), key=lambda item: item[self._order_key]):
             yield value, data
 
     def __iter__(self):
