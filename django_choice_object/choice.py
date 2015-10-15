@@ -13,7 +13,7 @@ class ChoiceMetaclass(type):
                 if isinstance(value, tuple) and len(value) > 1:
                     value, display_name = value[0], value[1]
                 else:
-                    generated_name = " ".join([x.capitalize() for x in name.split("_")])
+                    generated_name = " ".join(x.capitalize() for x in name.split("_"))
                     value, display_name = value, generated_name
 
                 cls._data[value] = display_name
