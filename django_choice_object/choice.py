@@ -1,25 +1,25 @@
 import inspect
-import operator
 import six
 
 
 class ChoiceMetaclass(type):
     def __init__(cls, name, typeof, other):
-        # {value: (display_name, is_specified))
         cls._data = {}
         cls._order_key = 0 if (getattr(cls, "_order_by", "value") == "value") else 1
 
         for name, value in inspect.getmembers(cls):
-            if not name.startswith("_") and \
-                    not (inspect.isfunction(value) or inspect.ismethod(value) or type(value) is classmethod):
-                if isinstance(value, tuple) and len(value) > 1:
-                    value, display_name, is_specified = value[0], value[1], True
-                else:
-                    generated_name = " ".join([x.capitalize() for x in name.replace("_", " ").split(" ")])
-                    value, display_name, is_specified = value, generated_name, False
+            if name.startswith("_"):
+                continue
+            if inspect.isfunction(value) or inspect.ismethod(value) or type(value) is classmethod:
+                continue
 
-                cls._data[value] = display_name
+            if isinstance(value, tuple) and len(value) > 1:
+                value, display_name = value[0], value[1]
                 setattr(cls, name, value)
+            else:
+                display_name = " ".join(x.capitalize() for x in name.split("_"))
+
+            cls._data[value] = display_name
 
         # So we need to access the ._data attribute of any parent classes so we can access the
         if hasattr(cls.__base__, "_data"):
@@ -28,9 +28,12 @@ class ChoiceMetaclass(type):
             for value, name_data in data.items():
                 cls._data[value] = name_data
 
-    def __iter__(self):
-        for value, data in sorted(self._data.items(), key=lambda i: i[0] if self._order_key == 0 else i[1]):
+    def _iter(self):
+        for value, data in sorted(self._data.items(), key=lambda item: item[self._order_key]):
             yield value, data
+
+    def __iter__(self):
+        return self._iter()
 
 
 class ChoiceBase(object):
@@ -41,8 +44,7 @@ class Choice(six.with_metaclass(ChoiceMetaclass, ChoiceBase)):
     _order_by = "value"
 
     def __iter__(self):
-        for value, data in sorted(self._data.items(), key=lambda i: i[0] if self._order_key == 0 else i[1]):
-            yield value, data
+        return self.__class__._iter()
 
     @classmethod
     def GetByValue(cls, value):
