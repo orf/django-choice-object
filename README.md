@@ -32,3 +32,9 @@ class SomeModel(models.Model):
 1
 >>> SomeModel().some_field = SomeChoice.LAST_CHOICE
 ```
+
+### Contributing
+
+- Set up a virtualenv: `virtualenv .`
+- Install the requirements: `pip install -r requirements.txt`
+- Run the tests: `nosetests .`
