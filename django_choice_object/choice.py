@@ -1,36 +1,42 @@
+import collections
 import inspect
 import six
 
 
 class ChoiceMetaclass(type):
-    def __init__(cls, name, typeof, other):
-        cls._data = {}
-        cls._order_key = 0 if (getattr(cls, "_order_by", "value") == "value") else 1
+    def __init__(cls, cls_name, bases, attrs):
+        cls._raw = []
+        for base in bases:
+            if hasattr(base, '_raw'):
+                cls._raw += base._raw
 
-        for name, value in inspect.getmembers(cls):
+        for name, value in attrs.items():
             if name.startswith("_"):
                 continue
             if inspect.isfunction(value) or inspect.ismethod(value) or type(value) is classmethod:
                 continue
 
             if isinstance(value, tuple) and len(value) > 1:
-                value, display_name = value[0], value[1]
-                setattr(cls, name, value)
+                setattr(cls, name, value[0])
             else:
                 display_name = " ".join(x.capitalize() for x in name.split("_"))
+                value = (value, display_name)
 
-            cls._data[value] = display_name
+            cls._raw.append(value)
 
-        # So we need to access the ._data attribute of any parent classes so we can access the
-        if hasattr(cls.__base__, "_data"):
-            data = cls.__base__._data
-            # Go and patch up our values
-            for value, name_data in data.items():
-                cls._data[value] = name_data
+        cls._raw = sorted(cls._raw, key=lambda item: cls._get_sort_key(item))
+
+        cls._data = collections.OrderedDict()
+        for value in cls._raw:
+            cls._data[value[0]] = value[1]
 
     def _iter(self):
-        for value, data in sorted(self._data.items(), key=lambda item: item[self._order_key]):
+        for value, data in six.iteritems(self._data):
             yield value, data
+
+    def _get_sort_key(self, value):
+        _order_key = 0 if (getattr(self, "_order_by", "value") == "value") else 1
+        return value[_order_key]
 
     def __iter__(self):
         return self._iter()
