@@ -1,4 +1,10 @@
 from distutils.core import setup
+import sys
+
+install_requires = ["six"]
+
+if sys.version_info < (2, 7):
+    install_requires.append("orderddict")
 
 setup(
     name='django-choice-object',
@@ -9,5 +15,5 @@ setup(
     author='Tom',
     author_email='tom@tomforb.es',
     description='A choice object for Django forms and models',
-    install_requires=["six"]
+    install_requires=install_requires
 )
