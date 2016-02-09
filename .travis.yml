@@ -8,5 +8,6 @@ python:
   - "pypy"
 
 install:
- - pip install six
+ - pip install nose
+ - python setup.py develop
 script: nosetests -v
