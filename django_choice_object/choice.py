@@ -1,6 +1,10 @@
-import collections
 import inspect
 import six
+
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 
 
 class ChoiceMetaclass(type):
@@ -26,7 +30,7 @@ class ChoiceMetaclass(type):
 
         cls._raw = sorted(cls._raw, key=lambda item: cls._get_sort_key(item))
 
-        cls._data = collections.OrderedDict()
+        cls._data = OrderedDict()
         for value in cls._raw:
             cls._data[value[0]] = value[1]
 
