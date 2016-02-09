@@ -21,6 +21,27 @@ class TestChoiceOrdered(TestChoice):
     _order_by = "name"
 
 
+class TestCustomOrdering(Choice):
+    LAST = ('last', 'Last', 10)
+    FIRST = ('first', 'First', 1)
+
+    @staticmethod
+    def _get_sort_key(value):
+        return value[2]
+
+
+class TestCustomOrderingInheritance(TestCustomOrdering):
+    MIDDLE = ('middle', 'Middle', 5)
+
+
+class TestSimple(Choice):
+    OTHER = 10
+
+
+class TestMultipleInheritance(TestChoice, TestSimple):
+    pass
+
+
 def get_name_from_choices(value, choices):
     for id, name in choices:
         if id == value:
@@ -51,7 +72,14 @@ class TestChoices(unittest.TestCase):
         self.failUnless(list(TestChoiceOrdered)[-1][0] == TestChoiceOrdered.ZED)
         self.failUnlessEqual(list(TestChoice)[0][0], TestChoice.FIRST)
 
+    def testCustomOrdering(self):
+        self.assertEqual(list(TestCustomOrdering)[0][0], TestCustomOrdering.FIRST)
+        self.assertEqual(list(TestCustomOrdering)[-1][0], TestCustomOrdering.LAST)
+        self.assertEqual(list(TestCustomOrderingInheritance)[0][0], TestCustomOrdering.FIRST)
+        self.assertEqual(list(TestCustomOrderingInheritance)[-1][0], TestCustomOrdering.LAST)
 
+    def testMultipleInheritance(self):
+        self.assertEqual(list(TestMultipleInheritance), list(TestChoice) + list(TestSimple))
 
 
 if __name__ == "__main__":
