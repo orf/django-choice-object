@@ -4,7 +4,7 @@ import sys
 install_requires = ["six"]
 
 if sys.version_info < (2, 7):
-    install_requires.append("orderddict")
+    install_requires.append("ordereddict")
 
 setup(
     name='django-choice-object',
