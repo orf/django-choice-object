@@ -1,4 +1,5 @@
 import unittest
+
 from .choice import Choice
 
 
@@ -13,7 +14,6 @@ class TestChoice(Choice):
 
 class TestChoiceInheritance(TestChoice):
     EXTRA_VALUE = 7
-    pass
 
 
 class TestChoiceOrdered(TestChoice):
@@ -40,6 +40,16 @@ class TestSimple(Choice):
 
 class TestMultipleInheritance(TestChoice, TestSimple):
     pass
+
+
+class TestGroups(Choice):
+    FIRST = 0
+    MIDDLE = 1
+    LAST = 2
+    EXTRA_LAST = 3
+
+    STARTED_GROUP = set((FIRST, MIDDLE))
+    END_GROUP = set((LAST, EXTRA_LAST))
 
 
 def get_name_from_choices(value, choices):
@@ -80,6 +90,11 @@ class TestChoices(unittest.TestCase):
 
     def testMultipleInheritance(self):
         self.assertEqual(list(TestMultipleInheritance), list(TestChoice) + list(TestSimple))
+
+    def testGroups(self):
+        self.assertEqual(len(list(TestGroups)), 4)
+        self.assertTrue(isinstance(TestGroups.STARTED_GROUP, set))
+        self.assertTrue(isinstance(TestGroups.END_GROUP, set))
 
 
 if __name__ == "__main__":

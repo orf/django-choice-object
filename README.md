@@ -33,6 +33,56 @@ class SomeModel(models.Model):
 >>> SomeModel().some_field = SomeChoice.LAST_CHOICE
 ```
 
+#### Advanced stuff
+
+##### Grouping
+
+Grouping choice values is a fairly common need. You can add groups of values to a choice like so:
+
+
+```python
+class ChoiceWitHGroups(Choice):
+    FIRST = 1
+    SECOND = 2
+    THIRD = 3
+    FOURTH = 4
+    
+    START_GROUP = {FIRST, SECOND}
+    END_GROUP = {THIRD, FOURTH}
+```
+
+Any value that ends with `_GROUP` and is a `set` will be ignored as a choice.
+
+
+##### Ordering
+
+Choices can be ordered in three ways. The default is by the value, but this can be configured using the 
+`_order_by` attribute:
+
+```python
+class TestChoiceOrdered(Choice):
+    LAST = 1, "zzzzzzzzz"
+    FIRST = 2, "aaaaaaaa"
+    _order_by = "name"
+```
+
+In the code snippet above the `FIRST` attribute would appear first as they are sorted by the 
+name rather than the value.
+
+You can also specify a custom sorting key:
+
+```python
+class WeirdChoice(Choice):
+    LAST = 'last', 'Last', 10
+    FIRST = 'first', 'First', 1
+
+    @staticmethod
+    def _get_sort_key(value):
+        return value[2]
+```
+
+In this case the third item in the tuple would be the item to sort on.
+
 ### Contributing
 
 - Set up a virtualenv: `virtualenv .`

@@ -8,7 +8,7 @@ if sys.version_info < (2, 7):
 
 setup(
     name='django-choice-object',
-    version='0.7',
+    version='0.8',
     packages=['django_choice_object'],
     url='https://github.com/orf/django-choice-object',
     license='',
