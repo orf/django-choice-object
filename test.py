@@ -1,6 +1,6 @@
 import unittest
 
-from .choice import Choice
+from django_choice_object import Choice
 
 
 class TestChoice(Choice):

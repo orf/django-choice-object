@@ -10,6 +10,6 @@ python:
   - "pypy3"
 
 install:
- - pip install nose setuptools --upgrade
+ - pip install setuptools --upgrade
  - python setup.py develop
-script: nosetests -v
+script: python test.py
