@@ -1,5 +1,6 @@
 import inspect
 import six
+import warnings
 
 try:
     from collections import OrderedDict
@@ -34,16 +35,19 @@ class ChoiceMetaclass(type):
         for value in cls._raw:
             cls._data[value[0]] = value[1]
 
-    def _iter(self):
-        for value, data in six.iteritems(self._data):
-            yield value, data
+    def _iter(cls):
+        warnings.warn(
+            '_iter is deprecated, use __iter__ (via list()/iter()) instead'
+        )
+        return cls.__iter__(cls)
 
-    def _get_sort_key(self, value):
-        _order_key = 0 if (getattr(self, "_order_by", "value") == "value") else 1
+    def _get_sort_key(cls, value):
+        _order_key = 0 if (getattr(cls, "_order_by", "value") == "value") else 1
         return value[_order_key]
 
-    def __iter__(self):
-        return self._iter()
+    def __iter__(cls):
+        for value, data in six.iteritems(cls._data):
+            yield value, data
 
 
 class ChoiceBase(object):
@@ -54,14 +58,14 @@ class Choice(six.with_metaclass(ChoiceMetaclass, ChoiceBase)):
     _order_by = "value"
 
     def __iter__(self):
-        return self.__class__._iter()
+        return iter(self.__class__)
 
     @classmethod
-    def GetByValue(cls, value):
+    def get_by_value(cls, value):
         return dict(cls)[value]
 
     @classmethod
-    def GetByName(cls, name):
+    def get_by_name(cls, name):
         if name is None:
             return None
 
@@ -74,3 +78,17 @@ class Choice(six.with_metaclass(ChoiceMetaclass, ChoiceBase)):
                 return getattr(cls, dirname)
 
         return None
+
+    @classmethod
+    def GetByValue(cls, value):
+        warnings.warn(
+            'GetByValue is deprecated, use get_by_value instead'
+        )
+        return cls.get_by_value(value)
+
+    @classmethod
+    def GetByName(cls, name):
+        warnings.warn(
+            'GetByName is deprecated, use get_by_name instead'
+        )
+        return cls.get_by_name(name)
