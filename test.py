@@ -105,7 +105,7 @@ class TestChoices(unittest.TestCase):
         self.assertTrue(isinstance(TestGroups.END_GROUP, set))
 
     def testGroupsWithNames(self):
-        self.assertEqual(TestGroupsWithNames.A_GROUP, {1, 2, 3})
+        self.assertEqual(TestGroupsWithNames.A_GROUP, set((1, 2, 3)))
 
 
 if __name__ == "__main__":
