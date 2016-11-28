@@ -68,27 +68,27 @@ def get_name_from_choices(value, choices):
 
 class TestChoices(unittest.TestCase):
     def testInstance(self):
-        self.failUnlessEqual(list(TestChoice()), list(TestChoice))
-        self.failUnlessEqual(list(TestChoiceOrdered()), list(TestChoiceOrdered))
-        self.failUnlessEqual(list(TestChoiceInheritance()), list(TestChoiceInheritance))
+        self.assertEqual(list(TestChoice()), list(TestChoice))
+        self.assertEqual(list(TestChoiceOrdered()), list(TestChoiceOrdered))
+        self.assertEqual(list(TestChoiceInheritance()), list(TestChoiceInheritance))
 
     def testInheritance(self):
-        self.failUnlessEqual(list(TestChoiceInheritance)[:-1], list(TestChoice))
+        self.assertEqual(list(TestChoiceInheritance)[:-1], list(TestChoice))
 
     def testNames(self):
         fourth_name = get_name_from_choices(TestChoice.FOURTH, list(TestChoice))
-        self.failUnlessEqual(fourth_name, "a description")
+        self.assertEqual(fourth_name, "a description")
 
         underscore_name = get_name_from_choices(TestChoice.WITH_UNDERSCORE, list(TestChoice))
-        self.failUnlessEqual(underscore_name, "With Underscore")
+        self.assertEqual(underscore_name, "With Underscore")
 
-        self.failUnlessEqual(TestChoice.GetByName("a description"), TestChoice.FOURTH)
-        self.failUnlessEqual(TestChoice.GetByValue(TestChoice.FOURTH), fourth_name)
+        self.assertEqual(TestChoice.GetByName("a description"), TestChoice.FOURTH)
+        self.assertEqual(TestChoice.GetByValue(TestChoice.FOURTH), fourth_name)
 
     def testOrderBy(self):
-        self.failIfEqual(list(TestChoice), list(TestChoiceOrdered))
-        self.failUnless(list(TestChoiceOrdered)[-1][0] == TestChoiceOrdered.ZED)
-        self.failUnlessEqual(list(TestChoice)[0][0], TestChoice.FIRST)
+        self.assertNotEqual(list(TestChoice), list(TestChoiceOrdered))
+        self.assertTrue(list(TestChoiceOrdered)[-1][0] == TestChoiceOrdered.ZED)
+        self.assertEqual(list(TestChoice)[0][0], TestChoice.FIRST)
 
     def testCustomOrdering(self):
         self.assertEqual(list(TestCustomOrdering)[0][0], TestCustomOrdering.FIRST)
