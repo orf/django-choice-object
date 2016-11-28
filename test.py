@@ -82,8 +82,8 @@ class TestChoices(unittest.TestCase):
         underscore_name = get_name_from_choices(TestChoice.WITH_UNDERSCORE, list(TestChoice))
         self.assertEqual(underscore_name, "With Underscore")
 
-        self.assertEqual(TestChoice.GetByName("a description"), TestChoice.FOURTH)
-        self.assertEqual(TestChoice.GetByValue(TestChoice.FOURTH), fourth_name)
+        self.assertEqual(TestChoice.get_by_name("a description"), TestChoice.FOURTH)
+        self.assertEqual(TestChoice.get_by_value(TestChoice.FOURTH), fourth_name)
 
     def testOrderBy(self):
         self.assertNotEqual(list(TestChoice), list(TestChoiceOrdered))
