@@ -52,6 +52,14 @@ class TestGroups(Choice):
     END_GROUP = set((LAST, EXTRA_LAST))
 
 
+class TestGroupsWithNames(Choice):
+    FIRST = 1, "abc"
+    SECOND = 2, "abc"
+    THIRD = 3, "abc"
+
+    A_GROUP = {FIRST, SECOND, THIRD}
+
+
 def get_name_from_choices(value, choices):
     for id, name in choices:
         if id == value:
@@ -95,6 +103,9 @@ class TestChoices(unittest.TestCase):
         self.assertEqual(len(list(TestGroups)), 4)
         self.assertTrue(isinstance(TestGroups.STARTED_GROUP, set))
         self.assertTrue(isinstance(TestGroups.END_GROUP, set))
+
+    def testGroupsWithNames(self):
+        self.assertEqual(TestGroupsWithNames.A_GROUP, {1, 2, 3})
 
 
 if __name__ == "__main__":
