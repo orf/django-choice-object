@@ -57,7 +57,7 @@ class TestGroupsWithNames(Choice):
     SECOND = 2, "abc"
     THIRD = 3, "abc"
 
-    A_GROUP = {FIRST, SECOND, THIRD}
+    A_GROUP = set((FIRST, SECOND, THIRD))
 
 
 def get_name_from_choices(value, choices):

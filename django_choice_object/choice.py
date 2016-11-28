@@ -21,10 +21,7 @@ class ChoiceMetaclass(type):
             if inspect.isfunction(value) or inspect.ismethod(value) or type(value) is classmethod:
                 continue
             if name.endswith('_GROUP') and isinstance(value, set):
-                value = {
-                    thing[0] if isinstance(thing, tuple) else thing
-                    for thing in value
-                }
+                value = set([thing[0] if isinstance(thing, tuple) else thing for thing in value])
                 setattr(cls, name, value)
 
             if isinstance(value, tuple) and len(value) > 1:
