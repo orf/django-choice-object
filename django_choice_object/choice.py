@@ -23,6 +23,7 @@ class ChoiceMetaclass(type):
             if name.endswith('_GROUP') and isinstance(value, set):
                 value = set([thing[0] if isinstance(thing, tuple) else thing for thing in value])
                 setattr(cls, name, value)
+                continue
 
             if isinstance(value, tuple) and len(value) > 1:
                 setattr(cls, name, value[0])
