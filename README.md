@@ -5,6 +5,10 @@ Django choice object
 
 I am a choice object for Django. I make using choices in forms and models easier.
 
+### Install
+
+`pip install django-choice-object`
+
 
 ### Usage
 
