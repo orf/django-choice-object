@@ -5,6 +5,8 @@ Django choice object
 
 I am a choice object for Django. I make using choices in forms and models easier.
 
+**Deprecated:** This is not needed since Django 3.0 which includes [enumeration types](https://docs.djangoproject.com/en/3.0/ref/models/fields/#field-choices-enum-types) which work similarly.
+
 ### Install
 
 `pip install django-choice-object`
